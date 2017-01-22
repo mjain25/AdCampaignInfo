@@ -1,0 +1,6 @@
+---
+# these properties are loaded when the active profile is "integrationTesting"
+spring:
+  profiles: integrationTesting
+  jpa.hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  datasource.platform: h2
