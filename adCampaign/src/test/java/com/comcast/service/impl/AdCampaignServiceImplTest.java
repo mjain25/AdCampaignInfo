@@ -82,6 +82,27 @@ public class AdCampaignServiceImplTest {
 		Assert.assertNotNull(service.getCampaign(partnerId));
 	}
 
+	@Test
+	public void testGetAllCampaign() {
+		Mockito.when(repository.findAll()).thenReturn(adCamplaignRequestList);
+
+		Assert.assertNotNull(service.getAllCampaign());
+	}
+
+	@Test(expected = DataNotFoundException.class)
+	public void testGetAllCampaign_NUll() {
+		Mockito.when(repository.findAll()).thenReturn(null);
+
+		service.getAllCampaign();
+	}
+
+	@Test(expected = DataNotFoundException.class)
+	public void testGetAllCampaign_Empty() {
+		Mockito.when(repository.findAll()).thenReturn(new ArrayList<>());
+
+		service.getAllCampaign();
+	}
+
 	@Test(expected = DataNotFoundException.class)
 	public void testGetCampaign_Null() {
 		Mockito.when(repository.findByPartnerId(partnerId)).thenReturn(null);
@@ -90,8 +111,16 @@ public class AdCampaignServiceImplTest {
 	}
 
 	@Test(expected = DataNotFoundException.class)
+	public void testGetCampaign_Empty() {
+		Mockito.when(repository.findByPartnerId(partnerId)).thenReturn(new ArrayList<>());
+
+		service.getCampaign(partnerId);
+	}
+
+	@Test(expected = DataNotFoundException.class)
 	public void testGetActiveCampaign_Null() {
-		adCamplaignRequestList.get(0).setDuration(0);
+		adCamplaignRequestList.get(0).setDuration(-10);
+
 		Mockito.when(repository.findByPartnerId(partnerId)).thenReturn(adCamplaignRequestList);
 
 		service.getCampaign(partnerId);

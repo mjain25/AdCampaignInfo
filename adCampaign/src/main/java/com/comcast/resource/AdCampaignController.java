@@ -61,9 +61,27 @@ public class AdCampaignController {
 	public List<AdCampaignRequestResource> getCampaign(
 			@ApiParam(value = "partnerId", name = "partnerId", required = true) @NotNull @PathVariable("partnerId") String partnerId) {
 		List<AdCampaignRequestResource> resourceList = adCampaignService.getCampaign(partnerId);
-		// comment
+
 		for (int i = 0; i < resourceList.size(); i++) {
 			resourceList.get(i).add(linkTo(methodOn(AdCampaignController.class).getCampaign(partnerId)).withSelfRel());
+		}
+
+		return resourceList;
+
+	}
+
+	@ApiOperation(value = "Fetch all ad campaigns (GET)")
+	@RequestMapping(value = "/ad/", method = RequestMethod.GET)
+	@ApiResponses({
+			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Success", response = AdCampaignRequest.class),
+			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Bad Request", response = ErrorMessage.class),
+			@ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal Server Error", response = ErrorMessage.class) })
+	@ResponseStatus(HttpStatus.OK)
+	public List<AdCampaignRequestResource> getAllCampaigns() {
+		List<AdCampaignRequestResource> resourceList = adCampaignService.getAllCampaign();
+
+		for (int i = 0; i < resourceList.size(); i++) {
+			resourceList.get(i).add(linkTo(methodOn(AdCampaignController.class).getAllCampaigns()).withSelfRel());
 		}
 
 		return resourceList;

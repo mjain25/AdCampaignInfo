@@ -33,7 +33,10 @@ public class AdCampaignResourceIntegrationTest extends IntegrationTest {
 
 		List<AdCampaignRequestResource> resourceList = controller.getCampaign("1");
 
+		List<AdCampaignRequestResource> allResourceList = controller.getAllCampaigns();
+
 		assertEquals(createdCampaign.getPartnerId(), adCampaignRequest.getPartnerId());
 		assertEquals(resourceList.get(0).getPartnerId(), "1");
+		assertEquals(allResourceList.get(0).getPartnerId(), "1");
 	}
 }

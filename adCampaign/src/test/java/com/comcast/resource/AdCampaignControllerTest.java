@@ -73,6 +73,13 @@ public class AdCampaignControllerTest {
 		verify(service).getCampaign(partnerId);
 	}
 
+	@Test
+	public void testGetAllCampaignList() {
+		Mockito.when(service.getAllCampaign()).thenReturn(resourceList);
+		Assert.assertNotNull(controller.getAllCampaigns());
+		verify(service).getAllCampaign();
+	}
+
 }
 
 /*

@@ -30,10 +30,31 @@ public class AdCampaignServiceImpl implements AdCampaignService {
 	}
 
 	@Override
-	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class })
+	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack")
 	public List<AdCampaignRequestResource> getCampaign(String partnerId) {
 
 		return getActiveAdCampaigns(partnerId);
+	}
+
+	@Override
+	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack")
+	public List<AdCampaignRequestResource> getAllCampaign() {
+
+		List<AdCampaignRequest> adCamplaigns = repository.findAll();
+		List<AdCampaignRequestResource> adCampaignRequestResourceList = new ArrayList<>();
+		if (null != adCamplaigns && !adCamplaigns.isEmpty()) {
+			for (AdCampaignRequest adCampaignRequest : adCamplaigns) {
+
+				AdCampaignRequestResource adCampaignResource = new AdCampaignResponseASM()
+						.toResource(adCampaignRequest);
+				adCampaignRequestResourceList.add(adCampaignResource);
+			}
+		}
+		if (adCampaignRequestResourceList.isEmpty()) {
+			throw new DataNotFoundException("No Campaigns found");
+		}
+		return adCampaignRequestResourceList;
+
 	}
 
 	private List<AdCampaignRequestResource> getActiveAdCampaigns(String partnerId) {
@@ -58,6 +79,11 @@ public class AdCampaignServiceImpl implements AdCampaignService {
 		}
 		return adCampaignRequestResourceList;
 
+	}
+
+	public void hystrixFallBack(Throwable e) throws Exception {
+
+		throw new Exception("Hystrix Exception Fallback : {} ", e);
 	}
 
 }

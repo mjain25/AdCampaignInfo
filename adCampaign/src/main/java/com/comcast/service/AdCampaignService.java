@@ -11,4 +11,6 @@ public interface AdCampaignService {
 
 	public List<AdCampaignRequestResource> getCampaign(String partnerId);
 
+	public List<AdCampaignRequestResource> getAllCampaign();
+
 }
