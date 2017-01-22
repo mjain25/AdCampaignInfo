@@ -68,3 +68,14 @@ Cache-Control: no-cache
 Postman-Token: 44b03d21-f857-d4c8-3f95-37d94c75139d 
 
 ```
+
+### Postman (Rest Client) Sample Request to GET All Campaigns
+
+```sh
+GET /ad/ HTTP/1.1
+Host: localhost:8080
+Cache-Control: no-cache
+Postman-Token: 1d0047eb-598e-d84d-d70d-eb19b7e02bcb 
+
+```
+
