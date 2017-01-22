@@ -30,14 +30,14 @@ public class AdCampaignServiceImpl implements AdCampaignService {
 	}
 
 	@Override
-	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack")
+	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack2")
 	public List<AdCampaignRequestResource> getCampaign(String partnerId) {
 
 		return getActiveAdCampaigns(partnerId);
 	}
 
 	@Override
-	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack")
+	@HystrixCommand(ignoreExceptions = { DataNotFoundException.class }, fallbackMethod = "hystrixFallBack1")
 	public List<AdCampaignRequestResource> getAllCampaign() {
 
 		List<AdCampaignRequest> adCamplaigns = repository.findAll();
@@ -81,9 +81,14 @@ public class AdCampaignServiceImpl implements AdCampaignService {
 
 	}
 
-	public void hystrixFallBack(Throwable e) throws Exception {
+	public List<AdCampaignRequestResource> hystrixFallBack1(Throwable e) throws Exception {
 
-		throw new Exception("Hystrix Exception Fallback : {} ", e);
+		throw new Exception("Hystrix Exception Fallback: {} ", e);
+	}
+
+	public List<AdCampaignRequestResource> hystrixFallBack2(String partnerId, Throwable e) throws Exception {
+
+		throw new Exception("Hystrix Exception Fallback: {}", e);
 	}
 
 }
